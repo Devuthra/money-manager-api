@@ -1,43 +1,49 @@
 package in.dev.moneymanager.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import lombok.RequiredArgsConstructor;
+import java.util.Map;
+import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    @Value("${brevo.api.key}")
+    private String apiKey;
 
-    @Value("${spring.mail.properties.mail.smtp.from}")
+    @Value("${brevo.from.email}")
     private String fromEmail;
 
-     @Value("${spring.mail.password}") 
-    private String mailPassword;
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    public void sendEmail(String to, String subject, String body){
+    public void sendEmail(String to, String subject, String body) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("api-key", apiKey);
 
-        //  Safe check - doesn't expose password
-    System.out.println("MAIL PASSWORD IS NULL: " + (mailPassword == null));
-    System.out.println("MAIL PASSWORD LENGTH: " + (mailPassword != null ? mailPassword.length() : 0));
+            Map<String, Object> request = Map.of(
+                "sender", Map.of("email", fromEmail),
+                "to", List.of(Map.of("email", to)),
+                "subject", subject,
+                "textContent", body
+            );
 
-        try{
-            SimpleMailMessage message=new SimpleMailMessage();
-            message.setFrom(fromEmail);
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(body);
-            mailSender.send(message);
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
 
+            ResponseEntity<String> response = restTemplate.postForEntity(
+                "https://api.brevo.com/v3/smtp/email",
+                entity,
+                String.class
+            );
 
-        }catch(Exception e){
+            System.out.println("Email sent: " + response.getStatusCode());
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-    
 }
