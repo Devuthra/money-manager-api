@@ -16,7 +16,14 @@ public class EmailService {
     @Value("${spring.mail.properties.mail.smtp.from}")
     private String fromEmail;
 
+     @Value("${spring.mail.password}") 
+    private String mailPassword;
+
     public void sendEmail(String to, String subject, String body){
+
+        //  Safe check - doesn't expose password
+    System.out.println("MAIL PASSWORD IS NULL: " + (mailPassword == null));
+    System.out.println("MAIL PASSWORD LENGTH: " + (mailPassword != null ? mailPassword.length() : 0));
 
         try{
             SimpleMailMessage message=new SimpleMailMessage();
