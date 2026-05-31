@@ -144,19 +144,14 @@ public class ProfileService {
     }
 
     String token = UUID.randomUUID().toString();
-
     profile.setActivationToken(token);
-
     profileRepository.save(profile);
 
-    String activationLink =
-            "http://localhost:8080/api/v1.0/activate?token=" + token;
+    // ✅ Fixed: use activationURL instead of hardcoded localhost
+    String activationLink = activationURL + "/api/v1.0/activate?token=" + token;
 
     String subject = "Activate your Money Manager Account";
-
-    String body =
-            "Click the following link to activate your account: "
-            + activationLink;
+    String body = "Click the following link to activate your account: " + activationLink;
 
     emailService.sendEmail(email, subject, body);
 
