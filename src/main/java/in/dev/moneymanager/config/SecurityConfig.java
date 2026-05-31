@@ -36,8 +36,16 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/status","/health","/register","/activate","/login","/resend","/test")
-                .permitAll()
+                .requestMatchers(
+                    "/api/v1.0/status",
+                    "/api/v1.0/health",
+                    "/api/v1.0/register",
+                    "/api/v1.0/activate",
+                    "/api/v1.0/activate/**",
+                    "/api/v1.0/login",
+                    "/api/v1.0/resend",
+                    "/api/v1.0/test"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
@@ -57,7 +65,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
