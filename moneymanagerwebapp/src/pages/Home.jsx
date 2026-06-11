@@ -1,6 +1,10 @@
-const Home=()=>{
-    retrun (
-        <div>Home</div>
+import Dashboard from "../components/DashBoard";
+
+const Home = () => {
+    return (
+        <div>
+           <Dashboard></Dashboard>
+        </div>
     )
 }
 export default Home;

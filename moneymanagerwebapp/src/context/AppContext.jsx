@@ -1,14 +1,35 @@
 import { createContext, useState, useContext } from "react";
 
-const AppContext = createContext({});
+export const AppContext = createContext({});  //  added export
 
 export const AppContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
+    const clearUser=()=>{
+        setUser(null);
+    }
+
     const contextValue = {
         user,
-        setUser  // ✅ good practice to expose setUser too
+        setUser,
+        clearUser
     };
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token && !user) {
+            const fetchUser = async () => {
+                try {
+                    const response = await axiosConfig.get(API_ENDPOINTS.GET_USER_INFO);
+                    setUser(response.data);
+                } catch (error) {
+                    console.error("Failed to fetch user", error);
+                    clearUser();
+                }
+            };
+            fetchUser();
+        }
+    }, []);
 
     return (
         <AppContext.Provider value={contextValue}>
@@ -17,5 +38,4 @@ export const AppContextProvider = ({ children }) => {
     );
 };
 
-// ✅ custom hook for easy access
 export const useAppContext = () => useContext(AppContext);

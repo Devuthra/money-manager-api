@@ -68,6 +68,12 @@ public class ProfileController {
         return "Test succesfull";
     }
 
+    @GetMapping("/profile")
+public ResponseEntity<ProfileDTO> getCurrentProfile(){
+    ProfileDTO currentProfile = profileService.getPublicProfile(null);
+    return ResponseEntity.ok(currentProfile);
+}
+
  @PostMapping("/resend")
 public ResponseEntity<String> resendMail(@RequestParam String email){
 
