@@ -45,15 +45,17 @@ const Login = () => {
                 navigate("/dashboard");
             }
         } catch (error) {
-            if(error.response && error.response.data.message){
-                setError(error.response.data.message);
-            }else{
-                 console.error('Something went wrong', error);
-            setError(error.message);
-
-            }
-           
-        } finally {
+    if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+    } else if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+        setError("Server is waking up, please wait 30 seconds and try again.");
+    } else {
+        console.error('Something went wrong', error);
+        setError(error.message);
+    }
+}
+        
+            finally {
             setIsLoading(false);
         }
     }

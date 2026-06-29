@@ -8,7 +8,7 @@ const TransactionInfoCard = ({ icon, title, date, amount, type, hideDeleteBtn, o
         <div className="group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/60">
             <div className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full">
                 {icon && icon.trim() !== "" ? (
-                    <img src={icon} alt={title} className="w-6 h-6" />
+                    <span className="text-2xl">{icon}</span>
                 ) : (
                     <UtensilsCrossed size={20} className="text-purple-800" />
                 )}

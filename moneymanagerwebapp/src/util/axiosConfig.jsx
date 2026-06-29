@@ -3,6 +3,7 @@ import { BASE_URL } from "./apiEndpoints";
 
 const axiosConfig = axios.create({
     baseURL:BASE_URL,
+     timeout: 15000, 
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
@@ -21,6 +22,8 @@ axiosConfig.interceptors.request.use(
 
         if (!shouldSkipToken) {                     //  corrected typo
             const accessToken = localStorage.getItem("token");
+            console.log("Token:", accessToken);        // 👈 add this
+    console.log("URL:", config.url); 
             if (accessToken) {
                 config.headers.Authorization = `Bearer ${accessToken}`;
             }
@@ -42,9 +45,9 @@ axiosConfig.interceptors.response.use(
             window.location.href = "/login";
         } else if (error.response?.status === 500) {
             console.error("Server error. Please try again later");
-        } else if (error.code === "ECONNABORTED") {
-            console.error("Request timeout. Please try again");
-        }
+        } else if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+    console.error("Request timeout. Please try again");
+}
         return Promise.reject(error);
     }                                               // ✅ properly closed before `)` 
 );
