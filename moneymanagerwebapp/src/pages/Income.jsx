@@ -114,16 +114,12 @@ const Income = () => {
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
-            window.URL.revokeObjectURL(url); // ✅ fixed typo: was revakeObjectURL
+            window.URL.revokeObjectURL(url);
             toast.success("Income details downloaded successfully");
         } catch (error) {
             console.log("Error downloading income details", error);
             toast.error(error.response?.data?.message || "Failed to download income");
         }
-    };
-
-    const handleEmailIncomeDetails = () => {
-        console.log("Email income details");
     };
 
     useEffect(() => {
@@ -150,7 +146,6 @@ const Income = () => {
                         onDelete={(id) => setOpenDeleteAlert({ show: true, data: id })}
                         onAdd={() => setOpenAddIncomeModal(true)}
                         onDownload={handleDownloadIncomeDetails}
-                        onEmail={handleEmailIncomeDetails}
                     />
                 )}
 

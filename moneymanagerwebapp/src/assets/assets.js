@@ -1,4 +1,4 @@
-import logo from "./logo.avif";
+import logo from "./logo.png";
 import login_bg from "./login_bg.png";
 import { Coins, Filter, Wallet } from "lucide-react";
 import { LayoutDashboard, List } from "lucide-react";

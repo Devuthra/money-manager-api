@@ -33,4 +33,18 @@ public class ExcelController {
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(new InputStreamResource(stream));
     }
+
+    @GetMapping("/download/expense")
+public ResponseEntity<InputStreamResource> downloadExpenseExcel() {
+    ByteArrayInputStream stream = excelService.generateExpenseExcel();
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Content-Disposition", "attachment; filename=expense_details.xlsx");
+
+    return ResponseEntity.ok()
+            .headers(headers)
+            .contentType(MediaType.parseMediaType(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            .body(new InputStreamResource(stream));
+}
 }

@@ -8,12 +8,12 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, color = "#875cf5" }) => {
     if (active && payload && payload.length) {
         return (
             <div className="bg-white border border-gray-200 rounded-lg shadow-md p-3">
                 <p className="text-xs text-gray-500 mb-1">{label}</p>
-                <p className="text-sm font-semibold text-purple-600">
+                <p className="text-sm font-semibold" style={{ color }}>
                     ₹{payload[0].value.toLocaleString()}
                 </p>
                 {payload[0].payload.name && (
@@ -25,11 +25,11 @@ const CustomTooltip = ({ active, payload, label }) => {
     return null;
 };
 
-const CustomLineChart = ({ data }) => {
+const CustomLineChart = ({ data, color = "#875cf5", emptyText = "No data to display" }) => {
     if (!data || data.length === 0) {
         return (
             <div className="flex items-center justify-center h-48 text-gray-400 text-sm">
-                No income data to display
+                {emptyText}
             </div>
         );
     }
@@ -54,9 +54,8 @@ const CustomLineChart = ({ data }) => {
                     tickFormatter={(value) => `₹${value.toLocaleString()}`}
                 />
 
-                {/* ✅ these 3 props fix touch */}
                 <Tooltip
-                    content={<CustomTooltip />}
+                    content={<CustomTooltip color={color} />}
                     trigger="hover"
                     allowEscapeViewBox={{ x: false, y: false }}
                     wrapperStyle={{ zIndex: 100 }}
@@ -65,10 +64,10 @@ const CustomLineChart = ({ data }) => {
                 <Line
                     type="monotone"
                     dataKey="amount"
-                    stroke="#875cf5"
+                    stroke={color}
                     strokeWidth={2.5}
-                    dot={{ r: 5, fill: "#875cf5", strokeWidth: 0 }}
-                    activeDot={{ r: 7, fill: "#875cf5" }}  // ✅ bigger tap target
+                    dot={{ r: 5, fill: color, strokeWidth: 0 }}
+                    activeDot={{ r: 7, fill: color }}
                 />
             </LineChart>
         </ResponsiveContainer>
