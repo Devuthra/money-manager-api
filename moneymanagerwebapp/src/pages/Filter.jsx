@@ -18,28 +18,26 @@ const Filter = () => {
     const [loading, setLoading] = useState(false);
 
     const handleSearch = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const response = await axiosConfig.get(API_ENDPOINTS.APPLY_FILTERS, {
-                params: {
-                    type,
-                    startDate,
-                    endDate,
-                    keyword,
-                    sortField,
-                    sortOrder,
-                },
-            });
-            
-            setTransaction(response.data);
-        } catch (error) {
-            console.error("Failed to fetch transactions:", error);
-            toast.error(error.response?.data?.message || "Failed to fetch transactions. Please try again");
-        } finally {
-            setLoading(false);
-        }
-    };
+    e.preventDefault();
+    setLoading(true);
+    try {
+        const response = await axiosConfig.post(API_ENDPOINTS.APPLY_FILTERS, {
+            type,
+            startDate: startDate || null,
+            endDate: endDate || null,
+            keyword,
+            sortField,
+            sortOrder,
+        });
+
+        setTransaction(response.data);
+    } catch (error) {
+        console.error("Failed to fetch transactions:", error);
+        toast.error(error.response?.data?.message || "Failed to fetch transactions. Please try again");
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <Dashboard activeMenu="Filter">
@@ -169,6 +167,17 @@ const Filter = () => {
                         </div>
                     )}
                 </div>
+
+                <div className="card p-4">
+                    <div className="flex items-center justify-between mb-4">
+                        <h5 className="text-lg font-semibold">Transactions</h5>
+                        </div>
+
+                    {transaction.length === 0 && !loading?(
+                        <p className="text-gray-500">Select the filters and click apply to filter the transactions</p>
+                    ): ""}
+                </div>
+
             </div>
         </Dashboard>
     );
