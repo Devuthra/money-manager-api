@@ -141,7 +141,7 @@ const Filter = () => {
                 </div>
 
                 <div className="border border-gray-200 rounded-2xl p-5 bg-white shadow-sm">
-                    <h5 className="text-lg font-medium text-gray-800 mb-4">Results</h5>
+                    <h5 className="text-lg font-medium text-gray-800 mb-4">Transactions</h5>
 
                     {loading ? (
                         <div className="flex items-center justify-center h-40">
@@ -166,16 +166,6 @@ const Filter = () => {
                             ))}
                         </div>
                     )}
-                </div>
-
-                <div className="card p-4">
-                    <div className="flex items-center justify-between mb-4">
-                        <h5 className="text-lg font-semibold">Transactions</h5>
-                        </div>
-
-                    {transaction.length === 0 && !loading?(
-                        <p className="text-gray-500">Select the filters and click apply to filter the transactions</p>
-                    ): ""}
                 </div>
 
             </div>
